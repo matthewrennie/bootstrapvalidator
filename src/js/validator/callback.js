@@ -30,7 +30,10 @@
             if (options.callback) {
                 var dfd      = new $.Deferred(),
                     response = $.fn.bootstrapValidator.helpers.call(options.callback, [value, validator, $field]);
-                dfd.resolve($field, 'callback', 'boolean' === typeof response ? response : response.valid, 'object' === typeof response && response.message ? response.message : null);
+                //defer resolve until current callstack has cleared
+                setTimeout(function() {
+                    dfd.resolve($field, 'callback', 'boolean' === typeof response ? response : response.valid, 'object' === typeof response && response.message ? response.message : null);
+                }, 1);                
                 return dfd;
             }
 
